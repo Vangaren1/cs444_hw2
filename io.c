@@ -11,6 +11,7 @@
 #include <cpu.h>
 #include "io_public.h"
 #include "ioconf.h"
+#include "tsystm.h"
 
 /*====================================================================
 *
@@ -34,7 +35,7 @@ void ioinit()
 *       (hw2: rename to "sysread" for the kernel)
 */
 
-int read(int dev, char *buf, int nchar)
+int sysread(int dev, char *buf, int nchar)
 {
   if (dev < 0 || dev >= NDEVS) return -1;      /* fail */
   return devtab[dev].dvread(dev, buf, nchar); /* call dev-specific routine */
@@ -45,7 +46,7 @@ int read(int dev, char *buf, int nchar)
 *       write function calling routine for SAPC devices
 *       (rename to "syswrite" for the kernel)
 */
-int write(int dev, char *buf, int nchar)
+int syswrite(int dev, char *buf, int nchar)
 {
   if (dev < 0 || dev >= NDEVS) return -1;       /* fail */
   return devtab[dev].dvwrite(dev, buf, nchar); /* call dev-specific routine */
@@ -56,7 +57,7 @@ int write(int dev, char *buf, int nchar)
 *       control function calling routine for SAPC devices
 *       (you can drop this one for hw2)
 */
-int control(int dev, int fncode, int val)  /* note: val could be pointer */
+int syscontrol(int dev, int fncode, int val)  /* note: val could be pointer */
 {
   if (dev < 0 || dev >= NDEVS) return -1;          /* fail */
   return devtab[dev].dvcontrol(dev, fncode, val); /* dev-specific routine */

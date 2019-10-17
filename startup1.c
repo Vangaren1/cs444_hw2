@@ -1,8 +1,8 @@
 /* C startup file, called from startup0.s-- */
 void startupc(void);
 void clr_bss(void);
-void init_devio();
-void k_init();
+void init_devio(void);
+void k_init(void);
 
 void startupc()
 {

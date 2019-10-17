@@ -3,7 +3,7 @@
 
 void k_init(void);
 
-/* k_init() initialize kernel routine */
+/* k_init() initializes kernel routine */
 void k_init()
 {
 	cli();

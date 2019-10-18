@@ -22,7 +22,7 @@ _write:	pushl %ebx                    # save the value of ebx
 	movl 8(%esp),%ebx             # first arg in ebx
 	movl 12(%esp),%ecx            # second arg in ecx
 	movl 16(%esp),%edx            # third arg in edx
-	movl $4,%eax                  # syscall # in eax
+	movl $3,%eax                  # syscall # in eax
         int $0x80                     # trap to kernel
 	popl %ebx                    # restore the value of ebx
 	ret
@@ -31,7 +31,7 @@ _read: pushl %ebx 				  # save the value of ebx
 	movl 8(%esp),%ebx 			  # first arg in ebx
 	movl 12(%esp),%ecx 		      # second arg in ecx
 	movl 16(%esp),%edx 			  # third arg in edx
-	movl $4,%eax 				  # syscall # in eax
+	movl $2,%eax 				  # syscall # in eax
 	    int $0x80                     # trap to kernel
 	popl %ebx 					  # restore the value of ebx
 	ret

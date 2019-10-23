@@ -21,7 +21,22 @@ void k_init()
 
 void syscallc(int user_eax, int arg1, char* arg2, int arg3)
 {
-	user_eax = syswrite(arg1, arg2, arg3);
+
+	switch(user_eax)
+	{
+		case 1: // system exit
+
+			break;
+		case 3: // sys call read
+
+			break;
+		case 4: // sys call write
+
+			break;
+		default:
+			kprintf("Bad arguement\n");
+	}
+
 }
 
 

@@ -10,6 +10,7 @@ void k_init()
 
 	ioinit();
 
+	desc->flags = GATE_P|GATE_DPL_KERNEL|GATE_TRAPGATE;
 	//call main here
 	main();
 
@@ -19,5 +20,5 @@ void k_init()
 
 void syscallc(int user_eax, int arg1, char* arg2, int arg3)
 {
-
+	user_eax = syswrite(arg1, arg2, arg3);
 }

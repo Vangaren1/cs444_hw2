@@ -17,7 +17,7 @@ void k_init()
 }
 
 
-void syscallc(int user_eax, int arg1, chat* arg2, int arg3)
+void syscallc(int user_eax, int arg1, char* arg2, int arg3)
 {
-	
+
 }

@@ -90,4 +90,4 @@ void delay()
   kprintf("<doing delay>\n");
   for (i = 0; i < DELAYLOOPCOUNT; i++)
    ;
-   }
+}

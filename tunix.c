@@ -10,5 +10,8 @@ void k_init()
 
 	ioinit();
 
+	//call main here
+	
+
 	sti();
 }

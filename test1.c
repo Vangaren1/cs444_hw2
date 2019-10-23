@@ -16,29 +16,29 @@ int main(void)
 
   	// Kernel handle this part
     kprintf("Debugging a simple write...\n");
-    got = write(ldev, "hi!\n", 4);
-    kprintf("Write of 4 returned %d\n", got);
-    kprintf("Debugging a longer write\n", got);
-    write(ldev, "abcdefghi", 9);
-    kprintf("Write of 9 returned, doing delay...\n", got);
-    debug_log("^^^^^^^^^^^^");         /* delay process beginned */
-    delay();
-    debug_log("vvvvvvvvvvvv");        /* delay process ended */
+    // got = write(ldev, "hi!\n", 4);
+    // kprintf("Write of 4 returned %d\n", got);
+    // kprintf("Debugging a longer write\n", got);
+    // write(ldev, "abcdefghi", 9);
+    // kprintf("Write of 9 returned, doing delay...\n", got);
+    // debug_log("^^^^^^^^^^^^");         /* delay process beginned */
+    // delay();
+    // debug_log("vvvvvvvvvvvv");        /* delay process ended */
 
-    for (i = 0; i < 80; i++)
-      buf[i] = 'A' + i/2;
+    // for (i = 0; i < 80; i++)
+    //   buf[i] = 'A' + i/2;
 
-    kprintf("\n Trying write of buf...\n");
-    write(ldev, buf, 80);
-    kprintf("\n write of 80 done\n");
-    debug_log("^^^^^^^^^^^^");
-    delay();
-    debug_log("vvvvvvvvvvvv");
+    // kprintf("\n Trying write of buf...\n");
+    // write(ldev, buf, 80);
+    // kprintf("\n write of 80 done\n");
+    // debug_log("^^^^^^^^^^^^");
+    // delay();
+    // debug_log("vvvvvvvvvvvv");
 
-    kprintf("\n Trying read...\n");
-    read(ldev, buf, 10);
-    kprintf("\n Returned from read, trying write of buf...\n");
-    write(ldev, buf, 10);
+    // kprintf("\n Trying read...\n");
+    // read(ldev, buf, 10);
+    // kprintf("\n Returned from read, trying write of buf...\n");
+    // write(ldev, buf, 10);
 
   	return 0;
 }

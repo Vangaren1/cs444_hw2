@@ -1,5 +1,13 @@
 #include <cpu.h>
 #include "tsystm.h"
+#include "tsyscall.h"
+
+extern IntHandler syscall /* the assembler envelope routine    */
+
+void kprintf(char *, ...);
+void debug_set_trap_gate(int n, const IntHandler *inthand_addr, int debug);
+void set_trap_gate(int n, IntHandler *inthand_addr);
+void syscallc(int user_eax, int devcode, char *buff, int bufflen)
 
 void k_init(void);
 
@@ -18,23 +26,24 @@ void k_init()
 	sti();
 }
 
-
-void syscallc(int user_eax, int arg1, char* arg2, int arg3)
+/* Rename the arguments */
+void syscallc(int user_eax, int devcode, char *buff, int bufflen)
 {
+	int nargs;
+  	int syscall_no = user_eax;
 
-	switch(user_eax)
+	switch(nargs = sysent[syscall_no].sy_narg)
 	{
 		case 1: // system exit
-
+			user_eax = nargs = sysent[syscall_no].sy_call(devcode);
 			break;
-		case 3: // sys call read
 
-			break;
-		case 4: // sys call write
+		case 3: // sys call write and read
+			user_eax = nargs = sysent[syscall_no].sy_call(devcode, buff, bufflen);
 
 			break;
 		default:
-			kprintf("Bad arguement\n");
+			kprintf("bad syscall argument %d, syscall #%d\n", nargs, syscall_no);
 	}
 
 }

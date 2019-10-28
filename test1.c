@@ -14,9 +14,36 @@ int main(void)
   	int got, i;
     int ldev = TTY1;
 
-  	// Kernel handle this part
+  	/* Kernel handle this part */
+    /* Write */
     kprintf("Debugging a simple write...\n");
     got = write(ldev, "hi!\n", 4);
+    kprintf("write of 4 returned %d\n", got);
+    kprintf("trying longer write\n");
+    write(ldev, "abcdefghi", 9);
+    kprintf("write of 9 returned, doing delay...\n",got);
+
+    /* Looping */
+    debug_log("...");  
+    delay();
+    debug_log("...");  
+
+    for (i = 0; i < 80; i++)
+        buf[i] = 'A'+ i/2;
+    kprintf("\nTrying write of buf...\n");
+    write(ldev, buf, 80);
+    kprintf("\nwrite of 80 done\n");
+
+    /* Looping */
+    debug_log("...");
+    delay();
+    debug_log("...");
+
+    /* Read */
+    kprintf("\nTrying read...\n");
+    read(ldev, buf, 10);
+    kprintf("\nReturned from read, trying write of buf...\n");
+    write(ldev, buf, 10);
 
   	return 0;
 }

@@ -7,7 +7,7 @@ extern IntHandler syscall; /* the assembler envelope routine    */
 extern void ustart(void);
 extern void finale(void);
 extern void locate_idt(unsigned int *limitp, char ** idtp);
-extern void debug_log(char *msg);
+//extern void debug_log(char *msg);
 
 #define MAXCALL 6
 #define DEBUG_AREA 0x300000
@@ -114,14 +114,6 @@ void debug_set_trap_gate(int n, IntHandler *inthand_addr, int debug)
 	desc->zero = 0;
 }
 
-/* Exit system call function implementation */
-int sysexit(int exit_code)
-{ 
-    kprintf("\n EXIT CODE IS %d\n", exit_code);
-	shutdown();
-	return 0;    
-}
-
 /* Program shutdown implementation */
 void shutdown()
 {
@@ -136,6 +128,16 @@ void shutdown()
   kprintf("\nLEAVE KERNEL!\n\n");
   finale();						/* trap to Tutor */
 }
+
+/* Exit system call function implementation */
+int sysexit(int exit_code)
+{ 
+    kprintf("\n EXIT CODE IS %d\n", exit_code);
+	shutdown();
+	return 0;    
+}
+
+
 
 void debug_log(char*msg)
 {

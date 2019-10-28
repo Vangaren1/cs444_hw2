@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "io_public.h"
+#include "tunistd.h"
 #include "tty_public.h"
 
 #define BUFLEN 80
@@ -18,6 +18,7 @@ int main(void)
   	/* Kernel handle this part */
     /* Write */
     kprintf("Debugging a simple write...\n");
+    debug_log("user start");
     got = write(ldev, "hi!\n", 4);
     kprintf("write of 4 returned %d\n", got);
     kprintf("trying longer write\n");

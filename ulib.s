@@ -2,7 +2,7 @@
 # description:	assembler routines for read, write, exit
 # hw2:	 add read, exit				
 
-.globl _write,_read,_exit,_ioctl
+.globl _write,_read,_exit
 .text
 # following Linux system call linkage
 # user stack when execution reaches _write:	
@@ -41,14 +41,5 @@ _exit: pushl %ebx
 	movl $1,%eax 			# syscall # in eax
 	int $0x80 				# trap to kernel
 	popl %ebx               # pop to restore value of ebx
-	ret
-	
-_ioctl:	pushl %ebx                     # save the value of ebx
-	movl 8(%esp),%ebx
-	movl 12(%esp),%ecx
-	movl 16(%esp),%edx
-	movl $5,%eax
-        int $0x80                     # call trap handler
-	popl  %ebx                    # restore the value of ebx
 	ret
 

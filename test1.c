@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "io_public.h"
+#include "tty_public.h"
 
 #define BUFLEN 80
 #define MILLION 1000000

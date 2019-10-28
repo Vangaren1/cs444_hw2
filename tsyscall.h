@@ -7,8 +7,8 @@
 #define	TSYSCALL_H
 
 #define	TEXIT	1
-#define	TREAD 	3
-#define	TWRITE	4
+#define	TREAD 	2
+#define	TWRITE	3
 #define	TIOCTL	5   /* not the real number, but keep things small */
 
 #endif

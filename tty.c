@@ -23,9 +23,10 @@
 #define BUFLEN 20
 #define DEBUG_AREA 0x300000
 
-
+/* Debug is happening in tunix.c
 char *debug_log_area = (char *) DEBUG_AREA;
 char *debug_record;
+*/
 
 /* tell C about the assembler shell routines */
 extern void irq3inthand(void), irq4inthand(void); 
@@ -36,7 +37,7 @@ void irq3inthandc(void);
 void irqinthandc(int);
 
 
-void debug_log(char *);
+//void debug_log(char *);
 struct tty ttytab[NTTYS];        /* software params/data for each SLU dev */
 
 /*====================================================================
@@ -48,7 +49,7 @@ void ttyinit(int dev)
 {
     int baseport;
     struct tty *tty;		/* ptr to tty software params/data block */
-    debug_record =debug_log_area;
+    //debug_record =debug_log_area;
 
     baseport = devtab[dev].dvbaseport; /* pick up hardware addr */
     tty = (struct tty *)devtab[dev].dvdata; /* and software params struct */
@@ -191,7 +192,7 @@ void irqinthandc(int dev)
    struct tty *tty = (struct tty *)(devtab[dev].dvdata);
     int baseport = devtab[dev].dvbaseport; /* hardware i/o port */;
     pic_end_int();           /* notify PIC that its part is done */
-    debug_log("*");
+    //debug_log("*");
 
     lsr=inpt(baseport + UART_IIR);
     switch( lsr = lsr & UART_IIR_ID)
@@ -200,7 +201,7 @@ void irqinthandc(int dev)
        ch = inpt(baseport+UART_RX); /*read char, ack the device */
        enqueue( &tty->rbuf, ch ); /* save char in read Q (if fits in Q) */
        sprintf(log,"<%c", ch);
-       debug_log(log);
+       //debug_log(log);
        
        if (tty->echoflag){	/* if echoing wanted */
         enqueue(&tty->ebuf,ch); /* echo char (if fits in Q) */
@@ -217,7 +218,7 @@ void irqinthandc(int dev)
 	    /* if there is char in tbuf Q output it */
                ch =dequeue(&tty->tbuf);
 	       sprintf(log, ">%c", ch);
-	       debug_log(log);
+	       //debug_log(log);
 	       outpt( baseport+UART_TX, ch ) ; /* ack tx dev */
              }
              else		/* all done transmitting */ 
@@ -226,13 +227,14 @@ void irqinthandc(int dev)
 
         default:
 	      sprintf(log, "@%c",lsr +0x30); /* print out error: @1 to @7 except @2 or @4 */
-	      debug_log(log);
+	      //debug_log(log);
 	      } 
 }
 
+/* Debug is happening in tunix.c
 void debug_log(char*msg)
 {
    strcpy(debug_record, msg);
    debug_record  +=strlen(msg);
    }
-
+*/

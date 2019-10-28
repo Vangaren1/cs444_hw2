@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include "io_public.h"
+#include "tunistd.h"
+#include "tty_public.h"
 
 #define BUFLEN 80
 #define MILLION 1000000
@@ -14,31 +15,37 @@ int main(void)
   	int got, i;
     int ldev = TTY1;
 
-  	// Kernel handle this part
+  	/* Kernel handle this part */
+    /* Write */
     kprintf("Debugging a simple write...\n");
-    // got = write(ldev, "hi!\n", 4);
-    // kprintf("Write of 4 returned %d\n", got);
-    // kprintf("Debugging a longer write\n", got);
-    // write(ldev, "abcdefghi", 9);
-    // kprintf("Write of 9 returned, doing delay...\n", got);
-    // debug_log("^^^^^^^^^^^^");         /* delay process beginned */
-    // delay();
-    // debug_log("vvvvvvvvvvvv");        /* delay process ended */
+    debug_log("user start");
+    got = write(ldev, "hi!\n", 4);
+    kprintf("write of 4 returned %d\n", got);
+    kprintf("trying longer write\n");
+    write(ldev, "abcdefghi", 9);
+    kprintf("write of 9 returned, doing delay...\n",got);
 
-    // for (i = 0; i < 80; i++)
-    //   buf[i] = 'A' + i/2;
+    /* Looping */
+    debug_log("...");  
+    delay();
+    debug_log("...");  
 
-    // kprintf("\n Trying write of buf...\n");
-    // write(ldev, buf, 80);
-    // kprintf("\n write of 80 done\n");
-    // debug_log("^^^^^^^^^^^^");
-    // delay();
-    // debug_log("vvvvvvvvvvvv");
+    for (i = 0; i < 80; i++)
+        buf[i] = 'A'+ i/2;
+    kprintf("\nTrying write of buf...\n");
+    write(ldev, buf, 80);
+    kprintf("\nwrite of 80 done\n");
 
-    // kprintf("\n Trying read...\n");
-    // read(ldev, buf, 10);
-    // kprintf("\n Returned from read, trying write of buf...\n");
-    // write(ldev, buf, 10);
+    /* Looping */
+    debug_log("...");
+    delay();
+    debug_log("...");
+
+    /* Read */
+    kprintf("\nTrying read...\n");
+    read(ldev, buf, 10);
+    kprintf("\nReturned from read, trying write of buf...\n");
+    write(ldev, buf, 10);
 
   	return 0;
 }

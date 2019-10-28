@@ -1,11 +1,19 @@
 #include <cpu.h>
+#include <gates.h>
 #include "tsystm.h"
 #include "tsyscall.h"
 
 extern IntHandler syscall; /* the assembler envelope routine    */
 extern void ustart(void), finale(void);
+extern void locate_idt(unsigned int *limitp, char ** idtp);
+
+#define MAXCALL = 6
+#define DEBUG_AREA 0x300000
 
 void kprintf(char *, ...);
+void k_init(void);
+char *debug_log_area = (char *)DEBUG_AREA;
+char *debug_record; 
 void debug_set_trap_gate(int n, IntHandler *inthand_addr, int debug);
 void set_trap_gate(int n, IntHandler *inthand_addr);
 void syscallc(int user_eax, int devcode, char *buff, int bufflen);
@@ -13,23 +21,19 @@ int sysexit(int);
 void shutdown(void);
 void debug_log(char*msg);
 
-#define MAXCALL = 6
-
 /* system call dispatch table */
 static  struct sysent {
        short   sy_narg;        			/* total number of arguments */
        int     (*sy_call)(int, ...);    /* handler */
 } sysent[MAXCALL];
 
-void k_init(void);
-
 /* k_init() initializes kernel routine */
 void k_init()
 {
+	debug_record = debug_log_area;  /* Clear the debug log */
+
 	cli();
-
 	ioinit();
-
 	set_trap_gate(0x80, &syscall);
 
 	/* Calling system call */
@@ -90,18 +94,18 @@ void debug_set_trap_gate(int n, IntHandler *inthand_addr, int debug)
 	unsigned int limit = 0;
 
 	if (debug)
-	printf("Calling locate_idt to do sidt instruction...\n");
+	kprintf("Calling locate_idt to do sidt instruction...\n");
 	locate_idt(&limit,&idt_addr);
 
 	idt = (Gate_descriptor *)idt_addr - KERNEL_BASE_LA; 
 
 	if (debug)
-	printf("Found idt at %x, lim %x\n",idt, limit);
+	kprintf("Found idt at %x, lim %x\n",idt, limit);
 	desc = &idt[n];               /* select nth descriptor in idt table */
 
 	/* fill in descriptor */
 	if (debug)
-	printf("Filling in desc at %x with addr %x\n",(unsigned int)desc,
+	kprintf("Filling in desc at %x with addr %x\n",(unsigned int)desc,
 	       (unsigned int)inthand_addr);
 	desc->selector = KERNEL_CS;   /* CS seg selector for int. handler */
 	desc->addr_hi = ((unsigned int)inthand_addr)>>16; /* CS seg offset of inthand  */
